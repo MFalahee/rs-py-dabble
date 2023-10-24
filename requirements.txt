@@ -1,0 +1,7 @@
+pyqt5
+pypiwin32
+pynput
+pyautogui
+numpy
+Pillow
+tensorflow

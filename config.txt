@@ -1,0 +1,9 @@
+{
+"window_name" : "RuneLite - IronSesame",
+"window_size" : [800,600],
+"left_corner" : [400,200],
+"close" : "esc",
+"idle" : "f7",
+"cook" : "f8",
+"windmouse" : true
+}
