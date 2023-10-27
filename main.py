@@ -9,7 +9,7 @@ import win32api
 import win32con
 import win32com.client
 from pynput import mouse, keyboard
-from scripts import cook
+from scripts import cook, fish
 
 global hwnd
 DEBUG = False
@@ -80,6 +80,10 @@ class runeliteWindow(QMainWindow):
         elif key == self.config["cook"]:
             self.mode = "cook"
             cook.cook(self.left_corner, self.move_mouse)
+        elif key == self.config["fish"]:
+            self.mode = "fish"
+            fish.setup(self.left_corner, self.move_mouse)
+            fish.fish()
         self.update()
 
     def move_mouse(self, x, y, box_movement = True):
