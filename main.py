@@ -82,8 +82,7 @@ class runeliteWindow(QMainWindow):
             cook.cook(self.left_corner, self.move_mouse)
         elif key == self.config["fish"]:
             self.mode = "fish"
-            fish.setup(self.left_corner, self.move_mouse)
-            fish.fish()
+            fish.setup(self)
         self.update()
 
     def move_mouse(self, x, y, box_movement = True):
@@ -112,16 +111,40 @@ class runeliteWindow(QMainWindow):
         p1 = min(max(position[1] - self.left_corner[1], 0), self.current_size[1] - 1)
         return (p0, p1)
 
-    def paintEvent(self, e):
+    def paintEvent(self, paintEvent):
+        # 
+        # compass_x_range = (625, 645)
+        # compass_y_range =(35, 50)
+        inventory_x_range = (615,776)
+        inventory_y_range = (264, 511)
+        spacing = 5
+        num_rect_x = 4
+        num_rect_y = 7
+        # interact_x_range = (400, 500)
+        # interact_y_range = (200, 500)
         painter = QtGui.QPainter(self)
         if self.mode == "idle":
             painter.setPen(QtCore.Qt.green)
+        elif self.mode == "fish":
+            painter.setPen(QtCore.Qt.blue)
+            # window
+            painter.drawLine(0,0,0,self.current_size[1])
+            painter.drawLine(0,0,self.current_size[0],0)
+            painter.drawLine(self.current_size[0],0,self.current_size[0],self.current_size[1])
+            painter.drawLine(0,self.current_size[1],self.current_size[0],self.current_size[1])
+            # inventory
+            painter.drawRect(615, 264, 160, 247)
+            rect_width = (inventory_x_range[1] - inventory_x_range[0] - (num_rect_x - 1) * spacing) / num_rect_x
+            rect_height = (inventory_y_range[1] - inventory_y_range[0] - (num_rect_y - 1) * spacing) / num_rect_y
+            for i in range(num_rect_x):
+                for j in range(num_rect_y):
+                    painter.drawRect(int(inventory_x_range[0] + i * (rect_width + spacing)), int(inventory_y_range[0] + j * (rect_height + spacing)), int(rect_width), int(rect_height))
         else:
-            painter.setPen(QtCore.Qt.red)
-        painter.drawLine(0,0,0,self.current_size[1])
-        painter.drawLine(0,0,self.current_size[0],0)
-        painter.drawLine(self.current_size[0],0,self.current_size[0],self.current_size[1])
-        painter.drawLine(0,self.current_size[1],self.current_size[0],self.current_size[1])
+            painter.setPen(QtCore.Qt.blue)
+            painter.drawLine(0,0,0,self.current_size[1])
+            painter.drawLine(0,0,self.current_size[0],0)
+            painter.drawLine(self.current_size[0],0,self.current_size[0],self.current_size[1])
+            painter.drawLine(0,self.current_size[1],self.current_size[0],self.current_size[1])
 def find_window_then_resize_and_move(window_name, position, size): 
     hwnd = win32gui.FindWindow(None, window_name)
     if hwnd == 0:
